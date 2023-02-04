@@ -1,0 +1,58 @@
+filebeat.inputs:
+- type: log
+  json.keys_under_root: true
+  paths:
+  - /home/george/projs/talk/dev1/code1.log
+- type: log
+  json.keys_under_root: true
+  paths:
+  - /home/george/projs/talk/dev1/code2.log
+
+processors:
+  - rename:
+      fields:
+      - from: "mdc.spanId"
+        to: "span.id"
+      - from: "mdc.traceId"
+        to: "trace.id"
+      ignore_missing: false
+      fail_on_error: true
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+  # Period on which files under path should be checked for changes
+  #reload.period: 10s
+
+# ======================= Elasticsearch template setting =======================
+
+setup.template.settings:
+  index.number_of_shards: 1
+  #index.codec: best_compression
+  #_source.enabled: false
+
+
+setup.kibana:
+
+  host: "https://140.84.191.236:5601"
+  ssl.verification_mode: none
+
+
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["140.84.165.132:9200"]
+
+  # Protocol - either `http` (default) or `https`.
+  protocol: "https"
+  ssl.verification_mode: none
+
+  # Authentication credentials - either API key or username/password.
+  #api_key: "id:api_key"
+  username: "elastic"
+  password: "3YB+txotcOS-HaVBoVoc"
+
+

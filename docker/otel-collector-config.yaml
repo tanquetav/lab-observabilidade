@@ -1,0 +1,52 @@
+receivers:
+  otlp:
+    protocols:
+      http: 
+        endpoint: otel:4318
+      grpc:
+        endpoint: otel:4317
+
+exporters:
+  logging:
+    loglevel: debug
+  otlp/elastic:
+    endpoint: 140.84.165.132:8200
+    headers:
+      # Elastic APM Server secret token
+      Authorization: "Bearer 1234"  
+    tls:
+      insecure: true
+
+processors:
+  batch:
+  metricstransform:
+    transforms:
+    - include: jvm.memory.used
+      action: insert
+      new_name: system.memory.actual.free
+    - include: jvm.memory.used
+      action: insert
+      new_name: system.memory.total
+    - include: system.cpu.usage
+      action: insert
+      new_name: system.cpu.total.norm.pct
+    - include: system.cpu.usage
+      action: insert
+      new_name: system.process.cpu.total.norm.pct
+
+extensions:
+  health_check:
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/elastic]
+
+    metrics:
+      receivers: [otlp]
+      processors: [metricstransform]
+      exporters: [otlp/elastic]
+#      exporters: [logging]
