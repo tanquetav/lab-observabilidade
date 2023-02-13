@@ -1,3 +1,7 @@
+* Verifique a branch grafana para a observabilidade com o stack da grafana
+
+* Elastic
+
 https://www.elastic.co/guide/en/apm/guide/current/open-telemetry.html
 
 https://discuss.elastic.co/t/no-information-in-the-metrics-module-of-the-apm-screen/279346
