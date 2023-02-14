@@ -1,0 +1,98 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: ./positions.yaml # This location needs to be writeable by Promtail.
+
+clients:
+  - url: http://localhost:3100/loki/api/v1/push
+
+scrape_configs:
+ - job_name: code1
+   pipeline_stages:
+      - json:
+          expressions:
+            TraceID: 'mdc.traceId'
+            SpanID: 'mdc.spanId'
+            level: '"log.level"'
+            message: '"message"'
+            thread_name: '"process.thread.name"'
+            stack_trace: '"error.stack_trace"'
+            timestamp: '"@timestamp"'
+      - labels:
+          level:
+          TraceID:
+          SpanID:
+      - timestamp:
+          source: timestamp
+          format: RFC3339Nano
+#    create / refine labels
+      - template:
+          source: TraceID
+          template: '{{if .Value }} {{- .Value -}} {{else}} {{- "-" -}} {{end}}'
+      - template:
+          source: SpanID
+          template: '{{if .Value }} {{- .Value -}} {{else}} {{- "-" -}} {{end}}'
+      - template:
+          source: stack_trace
+          template: '{{if .Value }} {{- " | Stack Trace: " -}}{{- .Value -}} {{else}} {{- " " -}} {{end}}'
+      - template:
+          source: msg
+          template: '{{ .message }}{{- .stack_trace -}}'
+      - template:
+          source: output
+          template: 'level={{ ToUpper .level }} trace_id={{ .TraceID }} span_id={{ .SpanID }} message={{ .message }}{{- .stack_trace -}}'
+    #data tag used as chunk of the log
+      - output:
+          source: output
+   static_configs:
+   - targets: 
+       - localhost
+     labels:
+      job: code1  # A `job` label is fairly standard in prometheus and useful for linking metrics and logs.
+      __path__: /home/george/projs/talk/dev1/code1.log  # The path matching uses a third party library: https://github.com/bmatcuk/doublestar
+ - job_name: code2
+   pipeline_stages:
+      - json:
+          expressions:
+            TraceID: 'mdc.traceId'
+            SpanID: 'mdc.spanId'
+            level: '"log.level"'
+            message: '"message"'
+            thread_name: '"process.thread.name"'
+            stack_trace: '"error.stack_trace"'
+            timestamp: '"@timestamp"'
+      - labels:
+          level:
+          TraceID:
+          SpanID:
+      - timestamp:
+          source: timestamp
+          format: RFC3339Nano
+#    create / refine labels
+      - template:
+          source: TraceID
+          template: '{{if .Value }} {{- .Value -}} {{else}} {{- "-" -}} {{end}}'
+      - template:
+          source: SpanID
+          template: '{{if .Value }} {{- .Value -}} {{else}} {{- "-" -}} {{end}}'
+      - template:
+          source: stack_trace
+          template: '{{if .Value }} {{- " | Stack Trace: " -}}{{- .Value -}} {{else}} {{- " " -}} {{end}}'
+      - template:
+          source: msg
+          template: '{{ .message }}{{- .stack_trace -}}'
+      - template:
+          source: output
+          template: 'level={{ ToUpper .level }} trace_id={{ .TraceID }} span_id={{ .SpanID }} message={{ .message }}{{- .stack_trace -}}'
+    #data tag used as chunk of the log
+      - output:
+          source: output
+   static_configs:
+   - targets: 
+       - localhost
+     labels:
+      job: code2  # A `job` label is fairly standard in prometheus and useful for linking metrics and logs.
+      __path__: /home/george/projs/talk/dev1/code2.log  # The path matching uses a third party library: https://github.com/bmatcuk/doublestar
+

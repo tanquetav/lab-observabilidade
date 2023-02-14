@@ -83,3 +83,5 @@ nb-configuration.xml
 
 *.log
 *.log.*
+
+promtail

@@ -8,7 +8,11 @@ receivers:
 
 exporters:
   logging:
-    loglevel: debug
+    loglevel: info
+  otlp/tempo:
+    endpoint: 192.168.5.73:24317
+    tls:
+      insecure: true
   otlp/elastic:
     endpoint: 140.84.165.132:8200
     headers:
@@ -43,10 +47,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp/elastic]
+      exporters: [otlp/tempo]
+#      exporters: [otlp/elastic]
 
-    metrics:
-      receivers: [otlp]
-      processors: [metricstransform]
-      exporters: [otlp/elastic]
+#    metrics:
+#      receivers: [otlp]
+#      processors: [metricstransform]
+#      exporters: [prometheus]
+#      exporters: [otlp/elastic]
 #      exporters: [logging]
