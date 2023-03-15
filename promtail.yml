@@ -42,7 +42,7 @@ scrape_configs:
           template: '{{ .message }}{{- .stack_trace -}}'
       - template:
           source: output
-          template: 'level={{ ToUpper .level }} trace_id={{ .TraceID }} span_id={{ .SpanID }} message={{ .message }}{{- .stack_trace -}}'
+          template: 'level={{ ToUpper .level }} trace_id={{ .TraceID }} span_id={{ .TraceID }} message={{ .message }}{{- .stack_trace -}}'
     #data tag used as chunk of the log
       - output:
           source: output
@@ -85,7 +85,7 @@ scrape_configs:
           template: '{{ .message }}{{- .stack_trace -}}'
       - template:
           source: output
-          template: 'level={{ ToUpper .level }} trace_id={{ .TraceID }} span_id={{ .SpanID }} message={{ .message }}{{- .stack_trace -}}'
+          template: 'level={{ ToUpper .level }} trace_id={{ .TraceID }} span_id={{ .TraceID }} message={{ .message }}{{- .stack_trace -}}'
     #data tag used as chunk of the log
       - output:
           source: output

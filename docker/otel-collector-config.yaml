@@ -14,7 +14,7 @@ exporters:
     tls:
       insecure: true
   otlp/elastic:
-    endpoint: 140.84.165.132:8200
+    endpoint: 155.248.211.112:31200
     headers:
       # Elastic APM Server secret token
       Authorization: "Bearer 1234"  
@@ -47,12 +47,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp/tempo]
+      exporters: [otlp/tempo, otlp/elastic]
 #      exporters: [otlp/elastic]
 
-#    metrics:
-#      receivers: [otlp]
-#      processors: [metricstransform]
+    metrics:
+      receivers: [otlp]
+      processors: [metricstransform]
 #      exporters: [prometheus]
-#      exporters: [otlp/elastic]
+      exporters: [otlp/elastic]
 #      exporters: [logging]
