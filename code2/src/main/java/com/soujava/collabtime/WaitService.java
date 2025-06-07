@@ -3,8 +3,8 @@ package com.soujava.collabtime;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import io.quarkus.logging.Log;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 

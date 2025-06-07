@@ -87,7 +87,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "24h",
       "title": "Total Requests",
       "type": "stat"
     },
@@ -149,7 +148,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "24h",
       "title": "Requests Count",
       "type": "stat"
     },
@@ -285,7 +283,6 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "24h",
       "title": "Total Exceptions",
       "type": "stat"
     },

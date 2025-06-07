@@ -10,11 +10,11 @@ exporters:
   logging:
     loglevel: info
   otlp/tempo:
-    endpoint: 192.168.5.73:24317
+    endpoint: 192.168.8.2:24317
     tls:
       insecure: true
   otlp/elastic:
-    endpoint: 155.248.211.112:31200
+    endpoint: 192.168.8.2:31200
     headers:
       # Elastic APM Server secret token
       Authorization: "Bearer 1234"  
@@ -48,11 +48,8 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlp/tempo, otlp/elastic]
-#      exporters: [otlp/elastic]
 
     metrics:
       receivers: [otlp]
       processors: [metricstransform]
-#      exporters: [prometheus]
       exporters: [otlp/elastic]
-#      exporters: [logging]
