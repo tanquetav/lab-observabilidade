@@ -59,7 +59,7 @@ export class Tempo extends Construct {
             ],
             container: [
               {
-                image: "grafana/tempo:latest",
+                image: "grafana/tempo:2.2.0",
                 name: `${name}`,
                 volumeMount: [
                   {
@@ -99,4 +99,3 @@ export class Tempo extends Construct {
 }
 
 export default Tempo;
-

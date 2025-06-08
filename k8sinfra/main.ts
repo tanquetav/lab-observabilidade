@@ -7,6 +7,10 @@ import { NAMESPACE } from "./constants";
 import ElasticSearch from "./elasticsearch";
 import Kibana from "./kibana";
 import FleetServer from "./fleetserver";
+import Prometheus from "./prometheus";
+import Loki from "./loki";
+import Tempo from "./tempo";
+import Grafana from "./grafana";
 // import Prometheus from "./prometheus";
 // import Loki from "./loki";
 // import Tempo from "./tempo";
@@ -29,10 +33,10 @@ class MyStack extends TerraformStack {
     new ElasticSearch(this);
     new Kibana(this);
     new FleetServer(this);
-    // new Prometheus(this);
-    // new Loki(this);
-    // new Tempo(this);
-    // new Grafana(this);
+    new Prometheus(this);
+    new Loki(this);
+    new Tempo(this);
+    new Grafana(this);
 
     //new WebDeployment(this, "nginx", "nginx", 1);
 
@@ -43,4 +47,3 @@ class MyStack extends TerraformStack {
 const app = new App();
 new MyStack(app, "k8sinfra");
 app.synth();
-

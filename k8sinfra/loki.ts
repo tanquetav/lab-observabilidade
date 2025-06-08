@@ -34,7 +34,7 @@ export class Loki extends Construct {
           spec: {
             container: [
               {
-                image: "grafana/loki:2.6.1",
+                image: "grafana/loki:3.4.1",
                 name: `${name}`,
                 args: ["-config.file=/etc/loki/local-config.yaml"],
               },
@@ -67,4 +67,3 @@ export class Loki extends Construct {
 }
 
 export default Loki;
-

@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import * as kubernetes from "@cdktf/provider-kubernetes";
 import { NAMESPACE } from "./constants";
-import { PROM_PROMETHEUS } from "./files/prometheus/data";
+import { PROM_PROMETHEUS2 } from "./files/prometheus/data";
 
 export class Prometheus extends Construct {
   public readonly resource: kubernetes.deployment.Deployment;
@@ -16,7 +16,7 @@ export class Prometheus extends Construct {
         name: "promfiles",
       },
       data: {
-        "prometheus.yaml": PROM_PROMETHEUS,
+        "prometheus.yaml": PROM_PROMETHEUS2,
       },
     });
 
@@ -59,7 +59,7 @@ export class Prometheus extends Construct {
             ],
             container: [
               {
-                image: "prom/prometheus:latest",
+                image: "prom/prometheus:v3.4.1",
                 name: `${name}`,
                 volumeMount: [
                   {
@@ -103,4 +103,3 @@ export class Prometheus extends Construct {
 }
 
 export default Prometheus;
-

@@ -59,7 +59,7 @@ export class Grafana extends Construct {
             ],
             container: [
               {
-                image: "grafana/grafana:9.1.6",
+                image: "grafana/grafana:12.0.1",
                 name: `${name}`,
                 volumeMount: [
                   {
@@ -113,4 +113,3 @@ export class Grafana extends Construct {
 }
 
 export default Grafana;
-
