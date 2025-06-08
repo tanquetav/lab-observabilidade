@@ -86,4 +86,3 @@ nb-configuration.xml
 
 promtail
 filebeat
-k8sinfra
