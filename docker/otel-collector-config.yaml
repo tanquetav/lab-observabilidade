@@ -7,14 +7,17 @@ receivers:
         endpoint: otel:4317
 
 exporters:
-  logging:
-    loglevel: info
-  otlp/tempo:
-    endpoint: 192.168.8.2:24317
-    tls:
-      insecure: true
+  debug:
+    verbosity: normal
+
+#  logging:
+#    loglevel: info
+#  otlp/tempo:
+#    endpoint: 192.168.8.2:24317
+#    tls:
+#      insecure: true
   otlp/elastic:
-    endpoint: 192.168.8.2:31200
+    endpoint: 172.17.0.1:31200
     headers:
       # Elastic APM Server secret token
       Authorization: "Bearer 1234"  
@@ -46,10 +49,17 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [batch]
-      exporters: [otlp/tempo, otlp/elastic]
+      processors: []
+      #exporters: [otlp/tempo, otlp/elastic]
+      exporters: [otlp/elastic]
 
     metrics:
       receivers: [otlp]
-      processors: [metricstransform]
+      #processors: [metricstransform]
+      processors: []
+      exporters: [otlp/elastic, debug]
+
+    logs:
+      receivers: [otlp]
+      processors: []
       exporters: [otlp/elastic]
