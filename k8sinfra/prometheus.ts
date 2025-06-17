@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import * as kubernetes from "@cdktf/provider-kubernetes";
-import { NAMESPACE } from "./constants";
+import { NAMESPACE2 } from "./constants";
 import { PROM_PROMETHEUS2 } from "./files/prometheus/data";
 
 export class Prometheus extends Construct {
@@ -12,7 +12,7 @@ export class Prometheus extends Construct {
     const name = "prometheus";
     const cm = new kubernetes.configMap.ConfigMap(this, "promfiles", {
       metadata: {
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: "promfiles",
       },
       data: {
@@ -26,7 +26,7 @@ export class Prometheus extends Construct {
         labels: {
           app: name,
         },
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: name,
       },
       spec: {
@@ -72,6 +72,7 @@ export class Prometheus extends Construct {
                   "--config.file=/etc/prometheus.yaml",
                   "--web.enable-remote-write-receiver",
                   "--enable-feature=exemplar-storage",
+                  "--web.enable-otlp-receiver",
                 ],
               },
             ],
@@ -81,16 +82,24 @@ export class Prometheus extends Construct {
     });
     this.service = new kubernetes.service.Service(this, "prometheus-svc", {
       metadata: {
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: "prometheusservice",
       },
       spec: {
         type: "NodePort",
         port: [
           {
+            name: "p1",
             port: 9090,
             targetPort: "9090",
             nodePort: 32090,
+            protocol: "TCP",
+          },
+          {
+            name: "p2",
+            port: 8888,
+            targetPort: "8888",
+            nodePort: 31888,
             protocol: "TCP",
           },
         ],

@@ -16,4 +16,10 @@ scrape_configs:
 export const PROM_PROMETHEUS2 = `global:
   scrape_interval:     15s
   evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'otel-collector'
+    static_configs:
+    - targets: ['0.0.0.0:8888']
+
 `;

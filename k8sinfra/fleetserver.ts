@@ -70,6 +70,9 @@ export class FleetServer extends Construct {
             ],
             container: [
               {
+                securityContext: {
+                  privileged: true,
+                },
                 image: `docker.elastic.co/elastic-agent/elastic-agent:${VERSION2}`,
                 name: `${name}`,
                 // volumeMount: [

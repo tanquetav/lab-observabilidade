@@ -60,6 +60,9 @@ export class Kibana extends Construct {
             ],
             container: [
               {
+                securityContext: {
+                  privileged: true,
+                },
                 image: `docker.elastic.co/kibana/kibana:${VERSION}`,
                 name: `${name}`,
                 volumeMount: [

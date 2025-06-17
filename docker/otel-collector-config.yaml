@@ -10,36 +10,29 @@ exporters:
   debug:
     verbosity: normal
 
-#  logging:
-#    loglevel: info
-#  otlp/tempo:
-#    endpoint: 192.168.8.2:24317
-#    tls:
-#      insecure: true
   otlp/elastic:
-    endpoint: 172.17.0.1:31200
+    endpoint: 172.18.0.1:31200
     headers:
       # Elastic APM Server secret token
       Authorization: "Bearer 1234"  
     tls:
       insecure: true
+  otlphttp/p1:
+    #endpoint: 172.17.0.1:32090
+    endpoint: http://172.18.0.1:32090/api/v1/otlp
+    tls:
+      insecure: true
+  otlp/p2:
+    endpoint: 172.18.0.1:32317
+    tls:
+      insecure: true
+  otlphttp/p3:
+    endpoint: http://172.18.0.1:32000/otlp
+    tls:
+      insecure: true
 
 processors:
   batch:
-  metricstransform:
-    transforms:
-    - include: jvm.memory.used
-      action: insert
-      new_name: system.memory.actual.free
-    - include: jvm.memory.used
-      action: insert
-      new_name: system.memory.total
-    - include: system.cpu.usage
-      action: insert
-      new_name: system.cpu.total.norm.pct
-    - include: system.cpu.usage
-      action: insert
-      new_name: system.process.cpu.total.norm.pct
 
 extensions:
   health_check:
@@ -49,17 +42,18 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: []
-      #exporters: [otlp/tempo, otlp/elastic]
-      exporters: [otlp/elastic]
+      exporters: [otlp/elastic, otlp/p2]
 
     metrics:
       receivers: [otlp]
-      #processors: [metricstransform]
       processors: []
-      exporters: [otlp/elastic, debug]
+      exporters: [ otlp/elastic, otlphttp/p1]
 
     logs:
       receivers: [otlp]
       processors: []
-      exporters: [otlp/elastic]
+      exporters: [otlp/elastic, otlphttp/p3]
+
+    profiles:
+      receivers: [otlp]
+      exporters: [otlp/elastic, debug]

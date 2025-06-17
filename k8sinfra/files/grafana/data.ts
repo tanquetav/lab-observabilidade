@@ -41,7 +41,8 @@ datasources:
   jsonData:
     derivedFields:
       - datasourceUid: tempo
-        matcherRegex: (?:traceID|trace_id)=(\w+)
-        name: TraceID
+        matcherRegex: trace_id
+        matcherType: label
+        name: TraceId
+        targetBlank: true
         url: \$\${__value.raw}`;
-

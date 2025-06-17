@@ -77,6 +77,9 @@ export class ElasticSearch extends Construct {
               ],
               container: [
                 {
+                  securityContext: {
+                    privileged: true,
+                  },
                   image: `docker.elastic.co/elasticsearch/elasticsearch:${VERSION}-amd64`,
                   name: `${name}`,
                   volumeMount: [

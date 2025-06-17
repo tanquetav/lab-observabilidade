@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import * as kubernetes from "@cdktf/provider-kubernetes";
-import { NAMESPACE } from "./constants";
+import { NAMESPACE2 } from "./constants";
 import { GF_GRAFANA } from "./files/grafana/data";
 
 export class Grafana extends Construct {
@@ -12,7 +12,7 @@ export class Grafana extends Construct {
     const name = "grafana";
     const cm = new kubernetes.configMap.ConfigMap(this, "graffiles", {
       metadata: {
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: "graffiles",
       },
       data: {
@@ -26,7 +26,7 @@ export class Grafana extends Construct {
         labels: {
           app: name,
         },
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: name,
       },
       spec: {
@@ -91,7 +91,7 @@ export class Grafana extends Construct {
     });
     this.service = new kubernetes.service.Service(this, "grafana-svc", {
       metadata: {
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: "grafanaservice",
       },
       spec: {

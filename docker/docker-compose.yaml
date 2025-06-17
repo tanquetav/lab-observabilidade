@@ -2,7 +2,7 @@ version: "2"
 services:
   db:
     image: postgres:14
-    restart: always
+#    restart: always
     environment:
       POSTGRES_PASSWORD: 1234
     ports:
@@ -10,7 +10,7 @@ services:
 
   otel:
     image: otel/opentelemetry-collector-contrib:latest
-    command: ["--config=/etc/otel-collector-config.yaml"]
+    command: ["--config=/etc/otel-collector-config.yaml","--feature-gates=service.profilesSupport"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml:Z
     ports:

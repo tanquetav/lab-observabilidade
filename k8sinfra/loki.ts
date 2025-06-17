@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import * as kubernetes from "@cdktf/provider-kubernetes";
-import { NAMESPACE } from "./constants";
+import { NAMESPACE2 } from "./constants";
 
 export class Loki extends Construct {
   public readonly resource: kubernetes.deployment.Deployment;
@@ -15,7 +15,7 @@ export class Loki extends Construct {
         labels: {
           app: name,
         },
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: name,
       },
       spec: {
@@ -45,7 +45,7 @@ export class Loki extends Construct {
     });
     this.service = new kubernetes.service.Service(this, "loki-svc", {
       metadata: {
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: "lokiservice",
       },
       spec: {

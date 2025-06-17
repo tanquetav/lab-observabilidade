@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import * as kubernetes from "@cdktf/provider-kubernetes";
-import { NAMESPACE } from "./constants";
+import { NAMESPACE2 } from "./constants";
 import { TP_TEMPO } from "./files/tempo/data";
 
 export class Tempo extends Construct {
@@ -12,7 +12,7 @@ export class Tempo extends Construct {
     const name = "tempo";
     const cm = new kubernetes.configMap.ConfigMap(this, "tempofiles", {
       metadata: {
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: "tempofiles",
       },
       data: {
@@ -26,7 +26,7 @@ export class Tempo extends Construct {
         labels: {
           app: name,
         },
-        namespace: NAMESPACE,
+        namespace: NAMESPACE2,
         name: name,
       },
       spec: {
@@ -77,16 +77,24 @@ export class Tempo extends Construct {
     });
     this.service = new kubernetes.service.Service(this, "tempo-svc", {
       metadata: {
-        namespace: NAMESPACE,
-        name: "tempoervice",
+        namespace: NAMESPACE2,
+        name: "temposervice",
       },
       spec: {
         type: "NodePort",
         port: [
           {
-            port: 24317,
-            targetPort: "24317",
+            name: "grpc",
+            port: 4317,
+            targetPort: "4317",
             nodePort: 32317,
+            protocol: "TCP",
+          },
+          {
+            name: "tempo",
+            port: 3200,
+            targetPort: "3200",
+            nodePort: 32318,
             protocol: "TCP",
           },
         ],

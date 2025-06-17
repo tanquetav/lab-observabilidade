@@ -24,4 +24,17 @@ public class GreetingController {
         remoteCode2Service.hello();
         return "Hello from spring";
     }
+    @GetMapping("/cpu")
+    public String cpu() {
+        return "Hello from "+computeFibonacci();
+    }
+    private static long computeFibonacci() {
+        return fibonacci(35);
+    }
+
+    private static long fibonacci(long n) {
+        if(n == 0) return 0;
+        if(n == 1) return 1;
+        return fibonacci(n-1) + fibonacci(n - 2);
+    }
 }
