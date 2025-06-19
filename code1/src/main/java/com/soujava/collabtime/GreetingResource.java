@@ -1,5 +1,6 @@
 package com.soujava.collabtime;
 
+import io.opentelemetry.api.baggage.Baggage;
 import io.quarkus.logging.Log;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -43,9 +44,16 @@ public class GreetingResource {
     @Path("/remote")
     @Produces(MediaType.TEXT_PLAIN)
     public String remote() {
-        Log.info("Starting Hello1");
-        waitService.waitTime();
-        remoteCode2Service.hello();
-        return "Hello from RESTEasy Reactive";
+        var baggage = Baggage.current()
+        .toBuilder()
+        .put("user", "123")
+        .build();
+
+        try (var baggageCurrent = baggage.makeCurrent()){
+            Log.info("Starting Hello1");
+            waitService.waitTime();
+            remoteCode2Service.hello();
+            return "Hello from RESTEasy Reactive";
+        }
     }
 }
