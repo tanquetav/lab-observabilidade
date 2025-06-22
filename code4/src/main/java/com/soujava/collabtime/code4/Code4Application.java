@@ -16,7 +16,7 @@ public class Code4Application {
 						.setApplicationName("code4")
 						.setProfilingEvent(EventType.ITIMER)
 						.setFormat(Format.JFR)
-						.setServerAddress("http://localhost:4040")
+						.setServerAddress("http://localhost:32040")
 						.build()
 		);
 

@@ -54,6 +54,3 @@ service:
       processors: []
       exporters: [otlp/elastic, otlphttp/p3]
 
-    profiles:
-      receivers: [otlp]
-      exporters: [otlp/elastic, debug]

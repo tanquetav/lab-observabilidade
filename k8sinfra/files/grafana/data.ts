@@ -36,7 +36,7 @@ datasources:
   basicAuth: false
   isDefault: false
   version: 1
-  editable: false
+  editable: true
   apiVersion: 1
   jsonData:
     derivedFields:
