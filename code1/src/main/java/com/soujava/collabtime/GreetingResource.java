@@ -46,7 +46,7 @@ public class GreetingResource {
     public String remote() {
         var baggage = Baggage.current()
         .toBuilder()
-        .put("user", "123")
+        .put("sku", "123")
         .build();
 
         try (var baggageCurrent = baggage.makeCurrent()){

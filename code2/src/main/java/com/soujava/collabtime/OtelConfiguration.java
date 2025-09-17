@@ -22,8 +22,8 @@ public class OtelConfiguration  implements AutoConfiguredOpenTelemetrySdkBuilder
                                 @Override
                                 public void onStart(Context parentContext, ReadWriteSpan span) {
                                     var baggage = Baggage.current().asMap();
-                                    if (baggage.containsKey("user")) {
-                                        span.setAttribute("local_user",baggage.get("user").getValue());
+                                    if (baggage.containsKey("sku")) {
+                                        span.setAttribute("local_sku",baggage.get("sku").getValue());
                                     }
                                 }
 

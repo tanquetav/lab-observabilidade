@@ -1,5 +1,7 @@
 package com.soujava.collabtime;
 
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import io.quarkus.logging.Log;
 
@@ -17,6 +19,7 @@ public class WaitService {
     public void waitTime() {
         Log.info("Start Waiting2");
         double sleepTime = Math.random();
+        Span.current().addEvent("cachemiss", Attributes.builder().put("cachewait", sleepTime).build());
         try ( var conn = dataSource.getConnection();
               var prep = conn.prepareStatement("SELECT pg_sleep(?)");
         ) {

@@ -11,7 +11,7 @@ exporters:
     verbosity: normal
 
   otlp/elastic:
-    endpoint: 172.18.0.1:31200
+    endpoint: 172.19.0.1:31200
     headers:
       # Elastic APM Server secret token
       Authorization: "Bearer 1234"  
@@ -19,20 +19,29 @@ exporters:
       insecure: true
   otlphttp/p1:
     #endpoint: 172.17.0.1:32090
-    endpoint: http://172.18.0.1:32090/api/v1/otlp
+    endpoint: http://172.19.0.1:32090/api/v1/otlp
     tls:
       insecure: true
   otlp/p2:
-    endpoint: 172.18.0.1:32317
+    endpoint: 172.19.0.1:32317
     tls:
       insecure: true
   otlphttp/p3:
-    endpoint: http://172.18.0.1:32000/otlp
+    endpoint: http://172.19.0.1:32000/otlp
     tls:
       insecure: true
 
 processors:
   batch:
+  transform/t1:
+    error_mode: ignore
+    trace_statements:
+        - set(span.attributes["sku"], Concat(["#", span.attributes["local_sku"]], "")  ) where span.attributes["local_sku"] != nil
+        - delete_key(span.attributes, "local_sku") 
+
+
+
+
 
 extensions:
   health_check:
@@ -42,6 +51,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
+      processors: [transform/t1]
       exporters: [otlp/elastic, otlp/p2]
 
     metrics:

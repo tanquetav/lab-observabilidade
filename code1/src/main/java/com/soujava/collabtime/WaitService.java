@@ -1,5 +1,7 @@
 package com.soujava.collabtime;
 
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import io.quarkus.logging.Log;
 
@@ -11,7 +13,9 @@ public class WaitService {
     public void waitTime() {
         Log.info("Start Waiting1");
         try {
-            Thread.sleep((long) (1000 * Math.random()));
+            long millis = (long) (1000 * Math.random());
+            Span.current().addEvent("cachemiss", Attributes.builder().put("cachewait", millis).build());
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
         }
         Log.info("Finish Waiting1");
